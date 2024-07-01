@@ -4,6 +4,7 @@ import {
   SchemaFactory,
 } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import * as uniqueValidator from 'mongoose-unique-validator';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -19,7 +20,7 @@ export class User {
   email: string;
 
   @Prop({ required: true })
-  hash: string;
+  password: string;
 
   @Prop({ default: false })
   isAvatarImageSet: boolean;
@@ -33,3 +34,7 @@ export class User {
 
 export const UserSchema =
   SchemaFactory.createForClass(User);
+
+UserSchema.plugin(uniqueValidator, {
+  message: 'User already exists',
+});
